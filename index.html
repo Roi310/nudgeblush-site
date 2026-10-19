@@ -141,6 +141,20 @@
   .feat .ic{font-size:30px; margin-bottom:14px; filter:drop-shadow(0 4px 12px rgba(255,92,138,.4))}
   .feat h3{font-size:18px; margin-bottom:6px}
   .feat p{color:var(--muted); font-size:15px}
+  /* complaint -> answer rows */
+  .gripes{margin-top:48px; display:flex; flex-direction:column; gap:14px}
+  .gripe{
+    background:rgba(16,10,28,.72); border:1px solid rgba(255,255,255,.1);
+    border-radius:18px; padding:24px 28px;
+    display:grid; grid-template-columns:1fr 1.5fr; gap:24px; align-items:start;
+    transition:border-color .2s ease;
+  }
+  .gripe:hover{border-color:rgba(79,227,193,.45)}
+  .gripe .complaint{color:var(--muted); font-size:15px; font-style:italic}
+  .gripe .complaint::before{content:"\201C"}
+  .gripe .complaint::after{content:"\201D"}
+  .gripe .answer{font-size:15px}
+  .gripe .answer strong{color:var(--aqua)}
   /* match burst demo */
   .matchdemo{
     margin-top:56px; text-align:center; padding:56px 32px; border-radius:28px;
@@ -258,6 +272,42 @@
         <div class="ic">🔒</div>
         <h3>Chats can't be screenshotted</h3>
         <p>Your private conversations stay private. Screenshots and recordings are blocked inside chats.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Different by design</p>
+    <h2>We read the one-star reviews.</h2>
+    <p class="sub">Dating apps keep making the same mistakes. Here's what Nudge Blush does instead.</p>
+    <div class="gripes">
+      <div class="gripe">
+        <p class="complaint">Apps are slot machines designed to keep you paying.</p>
+        <p class="answer"><strong>No pay-to-play.</strong> No boosts, no premium tiers, no paid visibility. There's nothing to buy — so there's no loop to trap you in.</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Endless swiping that goes nowhere.</p>
+        <p class="answer"><strong>No swiping at all.</strong> The radar shows real people near you, and a nudge costs real intent — not a flick of the thumb.</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Algorithms that bury you unless you're a 10.</p>
+        <p class="answer"><strong>No hidden ranking.</strong> No attractiveness scores, no engagement games. Everyone nearby shows up — nobody gets buried by a machine.</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Bots, scammers, and fake profiles everywhere.</p>
+        <p class="answer"><strong>One phone number, one account.</strong> Every profile is tied to an SMS-verified number. Faking accounts at scale is expensive here — on free-email apps it's free.</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Matches that never say a word.</p>
+        <p class="answer"><strong>Mutual-only chat, with help.</strong> Chat unlocks only when both people said yes — and icebreakers are built in, so nobody's stuck on "hey."</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Rejection, delivered straight to your ego.</p>
+        <p class="answer"><strong>Zero exposure.</strong> A one-way nudge is completely anonymous. Nobody ever knows you nudged — unless they nudge you back.</p>
+      </div>
+      <div class="gripe">
+        <p class="complaint">Apps that need you lonely to make money.</p>
+        <p class="answer"><strong>Delete us happily.</strong> We don't sell engagement. If you find your person and never open the app again, that's the product working.</p>
       </div>
     </div>
   </section>
