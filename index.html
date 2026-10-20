@@ -164,6 +164,35 @@
   .matchdemo .big{font-size:clamp(26px,4.5vw,40px); font-weight:900; letter-spacing:-.02em}
   .matchdemo .big em{font-style:normal; background:linear-gradient(90deg,var(--pink),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent}
   .matchdemo p{color:var(--muted); margin-top:10px}
+  /* mock match demo: two avatars, the ice between them, an icebreaker bubble */
+  .matchstage{position:relative; height:112px; max-width:430px; margin:30px auto 4px}
+  .mavatar{
+    position:absolute; top:50%; margin-top:-39px; width:78px; height:78px; z-index:2;
+    border-radius:50%; overflow:hidden;
+    background:rgba(12,10,24,.85); border:2px solid rgba(255,255,255,.25);
+    transition:left .9s cubic-bezier(.34,1.35,.5,1), right .9s cubic-bezier(.34,1.35,.5,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .mavatar img{width:100%; height:100%; object-fit:cover; object-position:center 20%; display:block}
+  .mavatar.left{left:4%}
+  .mavatar.right{right:4%}
+  .mice{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:46px; z-index:1;
+    transition:opacity .35s ease, transform .35s ease}
+  .matchstage.crack .mice{animation:iceShake .35s ease-in-out 2}
+  @keyframes iceShake{
+    0%,100%{transform:translate(-50%,-50%)}
+    25%{transform:translate(-56%,-50%) rotate(-8deg)}
+    75%{transform:translate(-44%,-50%) rotate(8deg)}
+  }
+  .matchstage.matched .mavatar.left{left:calc(50% - 88px); border-color:var(--pink); box-shadow:0 0 26px rgba(255,92,138,.5)}
+  .matchstage.matched .mavatar.right{right:calc(50% - 88px); border-color:var(--pink); box-shadow:0 0 26px rgba(255,92,138,.5)}
+  .matchstage.matched .mice{opacity:0; transform:translate(-50%,-50%) scale(2) rotate(20deg)}
+  .mbubble{
+    max-width:430px; margin:0 auto; padding:0 18px; text-align:left; overflow:hidden;
+    background:rgba(12,10,24,.85); border:0 solid rgba(79,227,193,.45); border-radius:18px 18px 18px 4px;
+    font-size:15px; color:var(--ink); max-height:0; opacity:0; pointer-events:none;
+    transition:max-height .5s ease, padding .5s ease, margin .5s ease, opacity .4s ease;
+  }
+  .mbubble.show{max-height:130px; padding:13px 18px; margin-top:20px; border-width:1px; opacity:1}
   .nudgebtn{
     display:inline-block; margin-top:24px; padding:16px 44px; border:none; cursor:pointer;
     font-size:18px; font-weight:800; color:#fff; border-radius:999px;
@@ -242,8 +271,14 @@
 
     <div class="matchdemo">
       <p class="kicker">Try it</p>
-      <p class="big">It's <em>mutual!</em> 💥</p>
-      <p>Go on — hit the button. That's what a nudge feels like.</p>
+      <div class="matchstage" id="matchStage">
+        <div class="mavatar left"><img src="demo-woman.jpg" alt="Demo profile photo of a woman"></div>
+        <div class="mice">🧊</div>
+        <div class="mavatar right"><img src="demo-man.jpg" alt="Demo profile photo of a man"></div>
+      </div>
+      <p class="big" id="matchBig">Two strangers. <em>One nudge.</em></p>
+      <p id="matchSub">Go on — hit the button. That's what a nudge feels like.</p>
+      <div class="mbubble" id="matchBubble">🧊 <strong>Icebreaker:</strong> Two truths and a lie — you go first.</div>
       <button class="nudgebtn" id="nudgeBtn">Send a nudge 💌</button>
     </div>
   </section>
@@ -382,11 +417,37 @@
     if(e.target.closest('a')) return; // let links work normally
     burst(e.clientX, e.clientY, false);
   });
-  document.getElementById('nudgeBtn').addEventListener('click', e => {
-    const r = e.currentTarget.getBoundingClientRect();
+  const stage = document.getElementById('matchStage');
+  const big = document.getElementById('matchBig');
+  const sub = document.getElementById('matchSub');
+  const bubble = document.getElementById('matchBubble');
+  const nudgeBtn = document.getElementById('nudgeBtn');
+  let matched = false, animating = false;
+  nudgeBtn.addEventListener('click', () => {
+    if(animating) return;
+    if(matched){
+      stage.classList.remove('matched');
+      bubble.classList.remove('show');
+      big.innerHTML = 'Two strangers. <em>One nudge.</em>';
+      sub.textContent = "Go on — hit the button. That's what a nudge feels like.";
+      nudgeBtn.textContent = 'Send a nudge 💌';
+      matched = false;
+      return;
+    }
+    animating = true;
+    const r = nudgeBtn.getBoundingClientRect();
     burst(r.left + r.width/2, r.top + r.height/2, true);
-    e.currentTarget.textContent = "Nudged! 💥";
-    setTimeout(()=>{ e.currentTarget.textContent = "Send a nudge 💌"; }, 1600);
+    nudgeBtn.textContent = 'Nudging…';
+    stage.classList.add('crack');
+    setTimeout(()=>{
+      stage.classList.remove('crack');
+      stage.classList.add('matched');
+      big.innerHTML = "It's <em>mutual!</em> 💥";
+      sub.textContent = "Chat's open — and the first line is on us.";
+      bubble.classList.add('show');
+      nudgeBtn.textContent = 'Try it again ↺';
+      matched = true; animating = false;
+    }, 1100);
   });
 })();
 </script>
